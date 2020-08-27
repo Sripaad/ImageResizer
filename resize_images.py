@@ -28,4 +28,12 @@ def resize_images():
     output_folder = args.outputdir
     resize = args.resize
     resize = re.split(r"x|X", resize)
-   
+	#Parallelize
+    images = glob.glob(os.path.join(input_folder, "*.jpg"))
+    Parallel(n_jobs=12)(
+        delayed(resizer.resizer)(
+            i, 
+            output_folder, 
+            (resize[0], resize[1])
+            ) for i in tqdm(images)
+    )    
