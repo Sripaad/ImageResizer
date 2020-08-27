@@ -11,8 +11,8 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 
 def resize_images():
-    
-    #taking user arguments
+
+    # taking user arguments
     parser = argparse.ArgumentParser(description="Resize images")
     parser.add_argument(
         "-i", "--inputdir", default=".", type=str, help="image path input directory"
@@ -28,12 +28,9 @@ def resize_images():
     output_folder = args.outputdir
     resize = args.resize
     resize = re.split(r"x|X", resize)
-	#Parallelize
+    # Parallelize
     images = glob.glob(os.path.join(input_folder, "*.jpg"))
     Parallel(n_jobs=12)(
-        delayed(resizer.resizer)(
-            i, 
-            output_folder, 
-            (resize[0], resize[1])
-            ) for i in tqdm(images)
-    )    
+        delayed(resizer.resizer)(i, output_folder, (resize[0], resize[1]))
+        for i in tqdm(images)
+    )
